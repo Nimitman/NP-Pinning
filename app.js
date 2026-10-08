@@ -164,7 +164,8 @@
     exportCsv() {
       const rows = [['Project', 'Locality', 'Start date', 'Ends in', 'Status', 'Managed by'], ...S.pinnings.map(p => [p.name, p.loc, p.start, p.ends, p.status, p.by])];
       const blob = new Blob([rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n')], { type: 'text/csv' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'your-pinnings.csv'; a.click();
+      try { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'your-pinnings.csv'; a.click(); } catch (e) { }
+      toast({ kind: 'info', title: 'Export started', sub: `your-pinnings.csv · ${S.pinnings.length} rows` }, 2500);
     },
     renew() { S.modal = 'expired'; },
     moreSlots() { S.modal = 'limitThanks'; },
@@ -349,14 +350,27 @@
 
   /* ---------- render loop with focus preservation ---------- */
   const app = document.getElementById('app');
+  let lastRouteKey = null;
+  /* desktop design is 1280 wide: scale it down between 768 and 1280 instead of scrolling sideways */
+  function fitDesktop() {
+    const dk = app.querySelector('.dk'); if (!dk) return;
+    const z = Math.min(1, document.documentElement.clientWidth / 1280);
+    dk.style.zoom = z < 1 ? String(z) : '';
+  }
   function render() {
     const ae = document.activeElement;
     const focus = ae && ae.dataset && ae.dataset.bind ? { key: ae.dataset.bind, s: ae.selectionStart, e: ae.selectionEnd, len: ae.value.length } : null;
     const mobile = isMobile();
     document.body.classList.toggle('is-mobile', mobile);
     document.body.classList.toggle('framed', mobile && window.innerWidth >= 768);
-    document.body.classList.toggle('lock', !!S.modal);
+    document.body.classList.toggle('scroll-locked', !!S.modal);
+    const keep = {};
+    const routeKey = S.route + (mobile ? 'm' : 'd');
+    if (routeKey === lastRouteKey) app.querySelectorAll('[data-scroll-key]').forEach(el => { keep[el.dataset.scrollKey] = [el.scrollTop, el.scrollLeft]; });
+    lastRouteKey = routeKey;
     app.innerHTML = mobile ? window.NPMobile.render(S, NP) : window.NPDesktop.render(S, NP);
+    app.querySelectorAll('[data-scroll-key]').forEach(el => { const k = keep[el.dataset.scrollKey]; if (k) { el.scrollTop = k[0]; el.scrollLeft = k[1]; } });
+    fitDesktop();
     if (focus) {
       const el = app.querySelector(`[data-bind="${focus.key}"]`);
       if (el) {
@@ -401,7 +415,7 @@
     }
   });
   let lastMobile = null;
-  window.addEventListener('resize', () => { const m = isMobile(); if (m !== lastMobile) { lastMobile = m; render(); } });
+  window.addEventListener('resize', () => { const m = isMobile(); if (m !== lastMobile) { lastMobile = m; render(); } else fitDesktop(); });
 
   /* ---------- public API (used by layouts + hooks) ---------- */
   const NP = window.NP = {

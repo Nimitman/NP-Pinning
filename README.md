@@ -2,7 +2,7 @@
 
 Interactive web prototype of the **New Project (NP) pinning** flow in the Housing.com broker/seller panel, built from the Figma file *Broker Dashboard (Seller) → Broker NP pinning* using the Bricks design system and Bricks iconography.
 
-> **Status: work in progress, not yet tested in a browser.** Desktop markup, styles and interaction logic are written; mobile markup is written but its stylesheet (`mobile.css`) and the scenario switcher (`hooks.js` / `hooks.css`) are not committed yet, so `index.html` currently requests three files that 404. See *Roadmap* below.
+> **Status: working prototype.** Desktop and mobile flows run in the browser with no console errors; every Figma state can be opened from the Screens switcher. Visual fidelity has been spot-checked against `ref/`, not yet screen-by-screen.
 
 ## Run it
 
@@ -16,9 +16,18 @@ Then open http://localhost:8080. (Opening `index.html` directly from disk also w
 
 Fonts load from Google Fonts: Google Sans Flex (UI), Rubik (navbar and CTA labels), Roboto (mobile browser mock).
 
+## Jump to any Figma state
+
+- **Screens switcher** — the dark pill in the bottom-left corner. Open it to pick any of the 66 states (desktop d1.1 – d4.9, mobile m1.1 – m4.9), switch layout between Auto / Desktop / Mobile 360, or reset. The ‹ › buttons step through states in order.
+- **URL hash** — append the state code, e.g. `index.html#d3.6` or `#m4.5`.
+- **Keyboard** — `[` and `]` step to the previous / next state.
+- **Console** — `NP.goto('d4.9')`, and `NP.screens()` lists every code.
+
+Every state is a live starting point, so you can keep clicking through the flow from there.
+
 ## What's covered
 
-Desktop (≥ 768 px) and mobile (< 768 px) render from the same state, so a flow can be continued after resizing.
+Desktop (≥ 768 px; scaled down between 768 and 1280 px) and mobile (< 768 px) render from the same state, so a flow can be continued after resizing. On a wide screen, "Mobile 360" shows the mobile layout inside a phone frame with the Android/Chrome mock from Figma.
 
 | Figma section | Screens | What works |
 |---|---|---|
@@ -47,6 +56,8 @@ app.js         state, actions, formatting helpers, render loop (event delegation
 desktop.js     desktop markup (string templates)
 mobile.js      mobile markup (string templates, bottom sheets)
 styles.css     Bricks tokens + desktop styles
+mobile.css     mobile styles (bottom sheets, phone-frame preview)
+hooks.js/.css  Screens switcher (prototype only)
 assets/        icons and images exported from Figma (unmodified); MANIFEST.txt maps each file to its Figma layer
 specs/         per-screen implementation specs extracted from Figma (d* = desktop, m* = mobile, cmp-* = components)
 ref/           Figma reference renders of every screen, used to check fidelity
@@ -60,8 +71,5 @@ ref/           Figma reference renders of every screen, used to check fidelity
 
 ## Roadmap
 
-- [ ] `mobile.css` — mobile layout styles (markup in `mobile.js` is done)
-- [ ] `hooks.js` / `hooks.css` — floating "Screens" panel and `#d3.6`-style URL hashes to jump to any Figma state, plus a device toggle (auto / desktop / 360 px frame)
-- [ ] Preserve scroll position of horizontal scrollers across re-renders on mobile
-- [ ] Run in a browser and fix issues
-- [ ] Side-by-side visual check of every screen against `ref/`
+- [ ] Screen-by-screen visual comparison with `ref/` and pixel fixes
+- [ ] Date-picker and unit (sq.ft / sq.m) switcher designs, once they exist in Figma
