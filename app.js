@@ -87,6 +87,8 @@
     if (S.create) { S.create.managedOpen = false; S.create.dateOpen = false; }
   };
 
+  const stopEditing = () => S.create.rows.forEach(x => { if (x.status === 'Editing price' || x.status === 'Editing total') x.status = x.prevStatus || 'Default'; });
+
   const toast = (t, ms = 5000) => {
     S.toast = { ...t, id: Date.now() };
     const id = S.toast.id;
@@ -219,8 +221,20 @@
     editPrice(id) {
       const r = S.create.rows.find(x => x.id === id);
       if (isMobile()) { S.edit = { id, total: inr(r.total), rate: inr(r.rate) }; S.modal = 'editPrice'; return; }
-      S.create.rows.forEach(x => { if (x.status === 'Editing price') { x.status = x.prevStatus || 'Default'; } });
+      stopEditing();
       r.prevStatus = r.status; r.draft = inr(r.rate); r.status = 'Editing price';
+    },
+    editTotal(id) {
+      const r = S.create.rows.find(x => x.id === id);
+      if (isMobile()) return actions.editPrice(id);
+      stopEditing();
+      r.prevStatus = r.status; r.draft = inr(r.total); r.status = 'Editing total';
+    },
+    saveTotal(id) {
+      const r = S.create.rows.find(x => x.id === id), v = num(r.draft);
+      if (!v) return actions.cancelPrice(id);
+      if (v !== r.total) { r.oldRate = r.oldRate || r.rate; r.total = v; r.rate = Math.round(v / r.area); r.status = 'Price updated'; }
+      else r.status = r.prevStatus || 'Default';
     },
     savePrice(id) {
       const r = S.create.rows.find(x => x.id === id), v = num(r.draft);

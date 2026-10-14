@@ -226,28 +226,34 @@ window.NPDesktop = (function () {
     Reported: `30 Sep · ${r.report ? r.report.ref : 'RPT-20931'} · Housing is reviewing`,
     'Price updated': `Was ₹${NP.inr(r.oldRate || r.rate)}/sq.ft · your listing only`,
     'Editing price': 'Total updates as you type · Enter to save, Esc to cancel',
+    'Editing total': 'Rate updates as you type · Enter to save, Esc to cancel',
     'Sold out': 'Marked sold out by the developer · can’t be selected'
   })[r.status];
 
   const SQM = 10.7639;
   const unitLbl = () => S.unit === 'sqm' ? 'sq.m.' : 'sq.ft.';
-  const pencil = (id) => `<button class="pencil" data-a="editPrice" data-v="${id}" aria-label="Edit price">${I('ic-pencil-simple-16.svg', 16, 16)}</button>`;
+  const pencil = (id, a = 'editPrice', label = 'Edit price per unit') => `<button class="pencil" data-a="${a}" data-v="${id}" aria-label="${label}">${I('ic-pencil-simple-16.svg', 16, 16)}</button>`;
   const cfgRow = r => {
-    const sold = r.status === 'Sold out', editing = r.status === 'Editing price';
-    const showEdit = !sold && !editing;
-    const total = editing ? NP.num(r.draft) * r.area : r.total;
-    const action = editing
-      ? `<button class="txt-btn brand" data-a="savePrice" data-v="${r.id}">Save</button><button class="txt-btn" data-a="cancelPrice" data-v="${r.id}">Cancel</button>`
+    const sold = r.status === 'Sold out', editing = r.status === 'Editing price', editingT = r.status === 'Editing total';
+    const showEdit = !sold && !editing && !editingT;
+    const total = editing ? NP.num(r.draft) * r.area : editingT ? NP.num(r.draft) : r.total;
+    const rate = editingT ? Math.round(total / r.area) : r.rate;
+    const bind = `create.rows.${S.create.rows.indexOf(r)}.draft`;
+    const save = editingT ? 'saveTotal' : 'savePrice';
+    const action = editing || editingT
+      ? `<button class="txt-btn brand" data-a="${save}" data-v="${r.id}">Save</button><button class="txt-btn" data-a="cancelPrice" data-v="${r.id}">Cancel</button>`
       : r.status === 'Under review' ? `<button class="txt-btn" data-a="removeRow" data-v="${r.id}">Remove</button>`
         : r.status === 'Reported' ? `<button class="txt-btn" data-a="viewReport" data-v="${r.id}">Reported</button>`
           : `<button class="report-btn" data-a="report" data-v="${r.id}">${I('ic-warn-fill-16.svg', 16, 16)}Report</button>`;
     return `<div class="crow ${r.selected && !sold ? 'is-sel' : ''} ${sold ? 'is-sold' : ''}">
       <span class="c-sel"><button class="cbx ${r.selected && !sold ? 'is-on' : ''} ${sold ? 'is-dis' : ''}" data-a="toggleRow" data-v="${r.id}" aria-label="Select">${r.selected && !sold ? I('ic-check-white-12.svg', 12, 12) : ''}</button></span>
       <span class="c-cfg"><b>${e(r.label)}</b>${note(r) ? `<span class="status-line">${chip(r.status)}<small>${note(r)}</small></span>` : ''}</span>
-      <span class="c-price"><b>${NP.rupee(total)}</b><small>${NP.short(total)}</small>${showEdit ? pencil(r.id) : ''}</span>
+      <span class="c-price">${editingT
+        ? `<span class="unit-input total-input"><span class="ui-pre">₹</span><input data-bind="${bind}" value="${e(r.draft)}" data-enter="saveTotal" data-esc="cancelPrice" data-v="${r.id}" inputmode="numeric" aria-label="Total price" data-autofocus><span class="ui-suf">${total ? NP.short(total) : ''}</span></span>`
+        : `<b>${NP.rupee(total)}</b><small>${NP.short(total)}</small>${showEdit ? pencil(r.id, 'editTotal', 'Edit total price') : ''}`}</span>
       <span class="c-unit">${editing
-        ? `<span class="unit-input"><span class="ui-pre">₹</span><input data-bind="create.rows.${S.create.rows.indexOf(r)}.draft" value="${e(r.draft)}" data-enter="savePrice" data-esc="cancelPrice" data-v="${r.id}" inputmode="numeric" data-autofocus><span class="ui-suf">/sq.ft.</span></span>`
-        : `<b>${NP.rupee(S.unit === 'sqm' ? Math.round(r.rate * SQM) : r.rate)}</b><small>/${S.unit === 'sqm' ? 'sq.m' : 'sq.ft'}</small>${showEdit ? pencil(r.id) : ''}`}</span>
+        ? `<span class="unit-input"><span class="ui-pre">₹</span><input data-bind="${bind}" value="${e(r.draft)}" data-enter="savePrice" data-esc="cancelPrice" data-v="${r.id}" inputmode="numeric" data-autofocus><span class="ui-suf">/sq.ft.</span></span>`
+        : `<b>${NP.rupee(S.unit === 'sqm' ? Math.round(rate * SQM) : rate)}</b><small>/${S.unit === 'sqm' ? 'sq.m' : 'sq.ft'}</small>${showEdit ? pencil(r.id) : ''}`}</span>
       <span class="c-act">${action}</span>
     </div>`;
   };

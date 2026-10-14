@@ -265,6 +265,7 @@ img { display: block; flex-shrink: 0; }
 .c-sel { width: 40px; display: flex; align-items: center; flex-shrink: 0; }
 .c-cfg { flex: 1; min-width: 1px; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; overflow: hidden; }
 .c-price { width: 240px; display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.total-input { flex: 0 0 200px; }
 .c-unit { width: 200px; display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
 .c-act { width: 160px; display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
 .crow b { font-weight: 500; font-size: 14px; line-height: 20px; white-space: nowrap; }
