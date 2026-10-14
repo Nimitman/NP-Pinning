@@ -203,7 +203,7 @@ img { display: block; flex-shrink: 0; }
 .psum__g { display: flex; flex-direction: column; gap: 8px; }
 .psum__top { display: flex; gap: 8px; align-items: center; }
 .psum h2 { font-weight: 600; font-size: 18px; line-height: 26px; }
-.tag-dark { height: 20px; padding: 0 8px; border-radius: 4px; background: var(--border-selected); color: #fff; font-weight: 500; font-size: 12px; line-height: 20px; letter-spacing: .1px; }
+.tag-dark { height: 20px; padding: 0 8px; border-radius: 4px; background: var(--surface-brand); color: #fff; font-weight: 500; font-size: 12px; line-height: 20px; letter-spacing: .1px; }
 .psum__meta { font-size: 14px; line-height: 20px; color: var(--text-secondary); white-space: pre; }
 .psum__addr { font-size: 12px; line-height: 16px; color: var(--text-muted); }
 .sigstrip { align-self: flex-start; display: flex; background: #fff; border-radius: 12px; }

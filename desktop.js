@@ -108,8 +108,7 @@ window.NPDesktop = (function () {
           <div class="dd-wrap" data-dd>${pill(f.locs, { state: 'selected', caret: true, a: 'filter', v: 'locs' })}
             ${f.open === 'locs' ? ddPanel([{ label: 'Sector 71, +2' }, { label: 'Sector 49' }, { label: 'Sohna Road' }], f.locs, 'pickLocsFilter') : ''}</div>
           <span class="band__div"></span>
-          <div class="dd-wrap" data-dd>${pill('High demand', { state: f.demand ? 'selected' : 'default', a: 'filter', v: 'demand' })}
-            ${f.open === 'demand' ? ddPanel([{ label: 'High demand', disabled: true }, { label: 'Moderate demand' }], f.demand, 'pickDemand') : ''}</div>
+          ${pill('High demand', { state: f.demand ? 'selected' : 'default', a: 'pickDemand', v: 'High demand' })}
           <div class="dd-wrap" data-dd>${pill(f.competition && f.open !== 'competition' ? f.competition : 'Seller competition', { state: f.competition ? 'selected' : 'default', caret: true, a: 'filter', v: 'competition' })}
             ${f.open === 'competition' ? ddPanel(['No competition yet', 'Low competition', 'Moderate competition', 'Crowded'].map(l => ({ label: l })), f.competition, 'pickCompetition') : ''}</div>
           ${pill('Developer is active', { state: f.dev ? 'selected' : 'default', a: 'toggleDev' })}
@@ -257,7 +256,7 @@ window.NPDesktop = (function () {
         <button class="sel-all" data-a="selectAll"><span class="cbx16 ${all ? 'is-on' : ''}">${all ? I('ic-check-12-brand.svg', 12, 12) : ''}</span>Select all</button></div>
       <div class="ctable ${c.error ? 'is-err' : ''}">
         <div class="chead"><span class="c-sel"></span><span class="c-cfg">Configuration · built-up area</span><span class="c-price">Total price</span>
-          <span class="c-unit">Price / <a class="unit-sel" data-a="noop">sq.ft.${I('ic-caret-down-brand-16.svg', 16, 16)}</a></span><span class="c-act">Report an issue</span></div>
+          <span class="c-unit">Price / <a class="unit-sel" data-a="toggleUnit">${S.unit === 'sqft' ? 'sq.ft.' : 'sq.m.'}${I('ic-caret-down-brand-16.svg', 16, 16)}</a></span><span class="c-act">Report an issue</span></div>
         ${c.rows.map(cfgRow).join('')}
       </div>
       ${c.error ? '<p class="units__err">Select at least one configuration you are selling — buyers are matched to you by configuration.</p>' : ''}
