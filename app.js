@@ -350,6 +350,12 @@
     'edit.rate'() { const e = S.edit, row = S.create.rows.find(x => x.id === e.id); e.rate = num(e.rate) ? inr(num(e.rate)) : ''; if (num(e.rate)) e.total = inr(num(e.rate) * row.area); }
   };
 
+  function fitDesktop() {
+    const dk = app.querySelector('.dk'); if (!dk) return;
+    const z = Math.min(1, document.documentElement.clientWidth / 1280);
+    dk.style.zoom = z < 1 ? String(z) : '';
+  }
+
   /* ---------- render loop with debouncing to prevent flicker ---------- */
   const app = document.getElementById('app');
   let lastRouteKey = null;
@@ -364,6 +370,12 @@
     });
   }
   
+  const ANIMATED = '.scrim, .modal, .d-toast, .m-toast, .m-scrim, .m-sheet, .m-dialog, .m-pick';
+  function overlayKey(el) {
+    const t = el.querySelector('h1, h2, h3, [class*="title"]');
+    return el.className + '|' + (t ? t.textContent.trim() : el.textContent.trim().slice(0, 80));
+  }
+
   function actualRender() {
     const ae = document.activeElement;
     const focus = ae && ae.dataset && ae.dataset.bind ? { key: ae.dataset.bind, s: ae.selectionStart, e: ae.selectionEnd, len: ae.value.length } : null;
@@ -375,7 +387,10 @@
     const routeKey = S.route + (mobile ? 'm' : 'd');
     if (routeKey === lastRouteKey) app.querySelectorAll('[data-scroll-key]').forEach(el => { keep[el.dataset.scrollKey] = [el.scrollTop, el.scrollLeft]; });
     lastRouteKey = routeKey;
+    const seen = new Set(Array.from(app.querySelectorAll(ANIMATED), overlayKey));
     app.innerHTML = mobile ? window.NPMobile.render(S, NP) : window.NPDesktop.render(S, NP);
+    // innerHTML recreates overlays each render; only let their enter animation play on first appearance
+    app.querySelectorAll(ANIMATED).forEach(el => { if (seen.has(overlayKey(el))) el.style.animation = 'none'; });
     app.querySelectorAll('[data-scroll-key]').forEach(el => { const k = keep[el.dataset.scrollKey]; if (k) { el.scrollTop = k[0]; el.scrollLeft = k[1]; } });
     fitDesktop();
     if (focus) {
@@ -431,7 +446,7 @@
     left, budgetState, pinsFor, selectedRows, manager, locSummary, selProject, isMobile, sbPhoneState, sbErrors, sbDetailsValid,
     get S() { return S; },
     set S(v) { S = v; },
-    fresh, newCreate, actions, render, startResend,
+    fresh, newCreate, actions, render: scheduleRender, startResend,
     projectMatches() {
       const q = S.sel.query.trim().toLowerCase();
       if (!q) return [];
