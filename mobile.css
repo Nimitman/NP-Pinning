@@ -129,7 +129,7 @@ body.framed .mb-scroll::-webkit-scrollbar { display: none; }
 .m-psum__t b { font-weight: 500; font-size: 14px; line-height: 20px; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .m-psum__t span, .m-psum__t small { font-size: 12px; line-height: 16px; max-width: 100%; white-space: pre; overflow: hidden; text-overflow: ellipsis; }
 .m-psum__t span { color: var(--text-secondary); } .m-psum__t small { color: var(--text-muted); white-space: nowrap; }
-.m-psum__t .tag-dark { flex-shrink: 0; }
+.m-psum__t .tag-dark { flex-shrink: 0; color: #fff; line-height: 20px; }
 .m-psum__ext { position: absolute; right: 18px; top: 16px; }
 
 /* schedule */
