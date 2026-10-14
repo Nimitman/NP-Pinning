@@ -41,6 +41,7 @@
     tab: 'All', page: 1,
     filters: { open: null, competition: null, demand: null, dev: false, city: 'Gurugram', locs: 'Sector 71, +2', hoverDisabled: false },
     carousel: 0,
+    unit: 'sqft',                     // sqft | sqm
     modal: null,
     sel: { city: 'Gurgaon', locs: ['Sector 49', 'Sohna Road', 'MG Road'], query: '', project: null, open: null, citySearch: '', locSearch: '', locDraft: [], forcePinned: false, hl: 1 },
     req: { name: '', dev: '', city: '', loc: '', rera: '', launch: '', poss: '', tried: false, sent: null },
@@ -88,7 +89,7 @@
   const toast = (t, ms = 5000) => {
     S.toast = { ...t, id: Date.now() };
     const id = S.toast.id;
-    if (ms) setTimeout(() => { if (S.toast && S.toast.id === id) { S.toast = null; render(); } }, ms);
+    if (ms) setTimeout(() => { if (S.toast && S.toast.id === id) { S.toast = null; scheduleRender(); } }, ms);
   };
 
   let otpTimer = null;
@@ -97,7 +98,7 @@
     clearInterval(otpTimer);
     otpTimer = setInterval(() => {
       if (!S.sb || S.sb.resend <= 0) { clearInterval(otpTimer); return; }
-      S.sb.resend--; render();
+      S.sb.resend--; scheduleRender();
     }, 1000);
   };
 
@@ -167,6 +168,7 @@
       try { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'your-pinnings.csv'; a.click(); } catch (e) { }
       toast({ kind: 'info', title: 'Export started', sub: `your-pinnings.csv · ${S.pinnings.length} rows` }, 2500);
     },
+    toggleUnit() { S.unit = S.unit === 'sqft' ? 'sqm' : 'sqft'; },
     renew() { S.modal = 'expired'; },
     moreSlots() { S.modal = 'limitThanks'; },
     extendPlan() { S.modal = 'expiredThanks'; },
@@ -348,16 +350,21 @@
     'edit.rate'() { const e = S.edit, row = S.create.rows.find(x => x.id === e.id); e.rate = num(e.rate) ? inr(num(e.rate)) : ''; if (num(e.rate)) e.total = inr(num(e.rate) * row.area); }
   };
 
-  /* ---------- render loop with focus preservation ---------- */
+  /* ---------- render loop with debouncing to prevent flicker ---------- */
   const app = document.getElementById('app');
   let lastRouteKey = null;
-  /* desktop design is 1280 wide: scale it down between 768 and 1280 instead of scrolling sideways */
-  function fitDesktop() {
-    const dk = app.querySelector('.dk'); if (!dk) return;
-    const z = Math.min(1, document.documentElement.clientWidth / 1280);
-    dk.style.zoom = z < 1 ? String(z) : '';
+  let renderScheduled = false;
+  
+  function scheduleRender() {
+    if (renderScheduled) return;
+    renderScheduled = true;
+    requestAnimationFrame(() => {
+      renderScheduled = false;
+      actualRender();
+    });
   }
-  function render() {
+  
+  function actualRender() {
     const ae = document.activeElement;
     const focus = ae && ae.dataset && ae.dataset.bind ? { key: ae.dataset.bind, s: ae.selectionStart, e: ae.selectionEnd, len: ae.value.length } : null;
     const mobile = isMobile();
@@ -384,6 +391,7 @@
     if (window.NPHooks) window.NPHooks.sync();
   }
 
+
   document.addEventListener('click', e => {
     if (e.target.closest('#hooks')) return;
     const el = e.target.closest('[data-a]');
@@ -393,29 +401,29 @@
       const fn = actions[el.dataset.a];
       if (fn) fn(el.dataset.v);
     }
-    render();
+    scheduleRender();
   });
   document.addEventListener('input', e => {
     const el = e.target;
     if (!el.dataset || !el.dataset.bind) return;
     setPath(el.dataset.bind, el.type === 'checkbox' ? el.checked : el.value);
     const f = afterInput[el.dataset.bind]; if (f) f();
-    render();
+    scheduleRender();
   });
   document.addEventListener('keydown', e => {
     const el = e.target;
-    if (el.dataset && el.dataset.enter && e.key === 'Enter') { e.preventDefault(); actions[el.dataset.enter](el.dataset.v); render(); }
-    if (el.dataset && el.dataset.esc && e.key === 'Escape') { e.preventDefault(); actions[el.dataset.esc](el.dataset.v); render(); return; }
-    if (e.key === 'Escape' && S.modal) { actions.closeModal(); render(); }
+    if (el.dataset && el.dataset.enter && e.key === 'Enter') { e.preventDefault(); actions[el.dataset.enter](el.dataset.v); scheduleRender(); }
+    if (el.dataset && el.dataset.esc && e.key === 'Escape') { e.preventDefault(); actions[el.dataset.esc](el.dataset.v); scheduleRender(); return; }
+    if (e.key === 'Escape' && S.modal) { actions.closeModal(); scheduleRender(); }
     if (el.dataset && el.dataset.bind === 'sel.query' && S.sel.open === 'proj') {
       const list = NP.projectMatches();
-      if (e.key === 'ArrowDown') { e.preventDefault(); S.sel.hl = Math.min(list.length - 1, S.sel.hl + 1); render(); }
-      if (e.key === 'ArrowUp') { e.preventDefault(); S.sel.hl = Math.max(0, S.sel.hl - 1); render(); }
-      if (e.key === 'Enter' && list[S.sel.hl]) { e.preventDefault(); actions.pickProject(list[S.sel.hl].id); render(); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); S.sel.hl = Math.min(list.length - 1, S.sel.hl + 1); scheduleRender(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); S.sel.hl = Math.max(0, S.sel.hl - 1); scheduleRender(); }
+      if (e.key === 'Enter' && list[S.sel.hl]) { e.preventDefault(); actions.pickProject(list[S.sel.hl].id); scheduleRender(); }
     }
   });
   let lastMobile = null;
-  window.addEventListener('resize', () => { const m = isMobile(); if (m !== lastMobile) { lastMobile = m; render(); } else fitDesktop(); });
+  window.addEventListener('resize', () => { const m = isMobile(); if (m !== lastMobile) { lastMobile = m; scheduleRender(); } else fitDesktop(); });
 
   /* ---------- public API (used by layouts + hooks) ---------- */
   const NP = window.NP = {
@@ -431,5 +439,5 @@
     }
   };
 
-  window.addEventListener('DOMContentLoaded', () => { lastMobile = isMobile(); if (window.NPHooks) window.NPHooks.boot(); render(); });
+  window.addEventListener('DOMContentLoaded', () => { lastMobile = isMobile(); if (window.NPHooks) window.NPHooks.boot(); scheduleRender(); });
 })();
