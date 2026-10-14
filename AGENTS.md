@@ -588,7 +588,7 @@ Repeated frames were turned into components; screens now use instances. Main com
 |---|---|
 | NP/Dashboard/Page header (+ "· first time") | `desktop.js` `header()` |
 | NP/Dashboard/Add pinning CTA | `desktop.js` `.cta-bar` |
-| NP/Dashboard/Package banner | `desktop.js` package banner (`d1.2b`) |
+| NP/Dashboard/Opportunities banner | not in the prototype (hidden in Figma screens) |
 | NP/Create/Page header | `desktop.js` create-pinning header |
 | NP/Create/Schedule | `desktop.js` `schedule()` |
 | NP/Create/Date picker popover | `desktop.js` date picker |
@@ -597,6 +597,9 @@ Repeated frames were turned into components; screens now use instances. Main com
 | NP/Mobile/Sticky CTA · dashboard, · select project | `mobile.js` sticky CTA |
 | NP/Mobile/Select project header | `mobile.js` select-project header |
 | NP/Mobile/Sheet header (+ "· with subtitle"), NP/Mobile/Sheet actions · single CTA, · sub-broker | `mobile.js` bottom sheets |
+
+### Developer annotations
+Dev-facing notes use the file's annotation categories (Interaction, Behaviour, Development, Accessibility) and sit on representative screens: 1.2 (carousel, collapse toggle, Export, Action column, budget card, CTA), 3.1 (schedule, unit header, row, submit bar), 3.1a (unit dropdown), 3.10 (editing total), 4.5 (dialog shell, OTP), M1.2 (sticky CTA) and M4.5 (bottom sheet). Each note names the action/state in `app.js` it maps to. New main components also carry a description.
 
 ---
 
