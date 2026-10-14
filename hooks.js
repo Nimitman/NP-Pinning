@@ -47,6 +47,7 @@ window.NPHooks = (function () {
     ]},
     { title: 'Desktop · 03 Create pinning', device: 'desktop', items: [
       ['d3.1', 'Confirm details', S => create(S)],
+      ['d3.1a', 'Unit dropdown open (sq.ft. / sq.m.)', S => { create(S); S.unitOpen = true; }],
       ['d3.2', 'No configuration selected (error)', S => create(S, c => { c.rows.forEach(r => r.selected = false); c.error = true; })],
       ['d3.3', 'Add missing configuration', S => { create(S, c => c.rows.forEach(r => r.selected = false)); addCfgFilled(S); S.modal = 'addCfg'; }],
       ['d3.4', 'Thank you — configuration added', S => { create(S, c => c.rows.forEach(r => r.selected = false)); addCfgFilled(S, true); S.modal = 'addCfgThanks'; }],
@@ -55,7 +56,8 @@ window.NPHooks = (function () {
       ['d3.6a', 'Report — all reasons expanded', S => { create(S); report(S, 'c4', true); S.modal = 'report'; }],
       ['d3.7', 'Thank you — issue reported', S => { create(S); reportDone(S, 'c4'); }],
       ['d3.8', 'Reported label on row', S => create(S, c => { c.rows.forEach(r => r.selected = false); newRow(S, { selected: true, status: 'Reported', report: { ref: 'RPT-20931', short: '3 BHK · 1,650 sq.ft', label: 'Price is wrong', suggested: '₹2,32,00,000' } }); })],
-      ['d3.8b', 'Inline price editing', S => create(S, c => { c.rows.forEach(r => r.selected = false); c.warn90 = true; row(S, 3).selected = true; newRow(S, { selected: true, status: 'Editing price', prevStatus: 'Default', draft: '10,424' }); })]
+      ['d3.8b', 'Inline price editing', S => create(S, c => { c.rows.forEach(r => r.selected = false); c.warn90 = true; row(S, 3).selected = true; newRow(S, { selected: true, status: 'Editing price', prevStatus: 'Default', draft: '10,424' }); })],
+      ['d3.10', 'Inline total price editing', S => create(S, c => { c.rows.forEach(r => r.selected = false); c.warn90 = true; row(S, 3).selected = true; newRow(S, { selected: true, status: 'Editing total', prevStatus: 'Default', draft: '1,72,00,000' }); })]
     ]},
     { title: 'Desktop · 04 Managed by — sub-broker', device: 'desktop', items: [
       ['d4.1', 'Managed by dropdown', S => create(S, c => { c.managedOpen = true; })],

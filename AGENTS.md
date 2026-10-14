@@ -569,4 +569,38 @@ NP.S.create                  // Pinning creation state
 
 ---
 
+## Figma ↔ code map (Broker NP pinning page)
+
+Figma file `MMROfHNkpi8xHCcP7yQt41`, page "↳ Broker NP pinning" (`12108:220025`).
+
+### New states (2026-10-14)
+| Code | Figma | What it shows |
+|---|---|---|
+| `d3.1a` | 3.1a · Create pinning — unit dropdown open (`13258:21075`) | Price / sq.ft. header opens a sq.ft. / sq.m. dropdown; rows convert at 1 sq.m. = 10.7639 sq.ft. |
+| `d3.10` | 3.10 · Create pinning — edit total price row (`13261:82092`) | Total price inline edit; rate updates live, Enter saves, Esc cancels |
+
+`NP/Config table/Row` gained `Status=Editing total` (Selected = Yes / No).
+
+### Section components
+Repeated frames were turned into components; screens now use instances. Main components live in the "Desktop Local components" and "Mobile local components" sections.
+
+| Component | Code counterpart |
+|---|---|
+| NP/Dashboard/Page header (+ "· first time") | `desktop.js` `header()` |
+| NP/Dashboard/Add pinning CTA | `desktop.js` `.cta-bar` |
+| NP/Dashboard/Opportunities banner | not in the prototype (hidden in Figma screens) |
+| NP/Create/Page header | `desktop.js` create-pinning header |
+| NP/Create/Schedule | `desktop.js` `schedule()` |
+| NP/Create/Date picker popover | `desktop.js` date picker |
+| NP/Create/Submit bar | `desktop.js` `submitBar()` |
+| NP/Dialog/Header, NP/Dialog/Actions · single CTA, · sub-broker | `desktop.js` modal shell |
+| NP/Mobile/Sticky CTA · dashboard, · select project | `mobile.js` sticky CTA |
+| NP/Mobile/Select project header | `mobile.js` select-project header |
+| NP/Mobile/Sheet header (+ "· with subtitle"), NP/Mobile/Sheet actions · single CTA, · sub-broker | `mobile.js` bottom sheets |
+
+### Developer annotations
+Dev-facing notes use the file's annotation categories (Interaction, Behaviour, Development, Accessibility) and sit on representative screens: 1.2 (carousel, collapse toggle, Export, Action column, budget card, CTA), 3.1 (schedule, unit header, row, submit bar), 3.1a (unit dropdown), 3.10 (editing total), 4.5 (dialog shell, OTP), M1.2 (sticky CTA) and M4.5 (bottom sheet). Each note names the action/state in `app.js` it maps to. New main components also carry a description.
+
+---
+
 See [README.md](README.md) for more details on running and testing the prototype.

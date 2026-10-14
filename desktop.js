@@ -114,8 +114,8 @@ window.NPDesktop = (function () {
           ${pill('Developer is active', { state: f.dev ? 'selected' : 'default', a: 'toggleDev' })}
         </div>
         <div class="band__arrows">
-          <button class="icon-btn ${pos === 0 ? 'is-dis' : ''}" data-a="carousel" data-v="-1">${I('ic-caret-left-18.svg', 18, 18)}</button>
-          <button class="icon-btn ${pos >= max ? 'is-dis' : ''}" data-a="carousel" data-v="1">${I('ic-caret-right-18.svg', 18, 18)}</button>
+          ${rbtn('left', { a: 'carousel', v: -1, dis: pos === 0, label: 'Previous' })}
+          ${rbtn('right', { a: 'carousel', v: 1, dis: pos >= max, label: 'Next' })}
         </div>
       </div>
       <div class="band__view">${list.length
@@ -124,12 +124,13 @@ window.NPDesktop = (function () {
     </section>`;
   };
 
+  const rbtn = (dir, o) => `<button class="rbtn ${o.dis ? 'is-dis' : ''}" data-a="${o.a}"${o.v !== undefined ? ` data-v="${o.v}"` : ''} aria-label="${o.label}"${o.dis ? ' aria-disabled="true"' : ''}><i class="rbtn__i rbtn__i--${dir}"></i></button>`;
   const badge = s => `<span class="badge badge--${s.replace(/\s/g, '-').toLowerCase()}">${s}</span>`;
 
   const pinnings = () => {
     const extra = S.pinnings.length - NP.D.pinnings.length;
     if (S.pinCollapsed) return `<section class="card pins-banner"><div><h2>Your pinnings</h2><p>You have total of 8 active, ${2 + extra} pending and 3 expired pinnings.</p></div>
-      <button class="icon-btn" data-a="collapse" aria-label="Expand">${I('ic-caret-down-dark-18.svg', 18, 18)}</button></section>`;
+      ${rbtn('down', { a: 'collapse', label: 'Expand' })}</section>`;
     const tabs = [['All', 12 + extra], ['Active', 8], ['Expired', 2], ['Pending', 2 + extra], ['Rejected', 0]];
     const match = { All: () => true, Active: p => p.status === 'Active' || p.status === 'Ending soon', Expired: p => p.status === 'Expired', Pending: p => p.status === 'Pending approval', Rejected: p => p.status === 'Rejected' }[S.tab];
     const rows = S.pinnings.filter(match);
@@ -137,17 +138,18 @@ window.NPDesktop = (function () {
     return `<section class="card pins ${S.collapsible ? 'pins--c' : ''}">
       <div class="pins__h"><h2>Your pinnings</h2><div class="pins__r">
         <a class="link-brand" data-a="exportCsv">Export ${I('ic-export-brand-16.svg', 16, 16)}</a>
-        ${S.collapsible ? `<button class="icon-btn" data-a="collapse" aria-label="Collapse">${I('ic-caret-up-18.svg', 18, 18)}</button>` : ''}
+        ${rbtn('up', { a: 'collapse', label: 'Collapse' })}
       </div></div>
       <div class="tabs">${tabs.map(([t, n]) => `<button class="tab ${S.tab === t ? 'is-sel' : ''}" data-a="tab" data-v="${t}">${t} (${n})</button>`).join('')}</div>
       <div class="ptable">
-        <div class="ptable__h"><span class="c1">Project</span><span class="c2">Start date</span><span class="c3">Ends in</span><span class="c4">Status</span><span class="c5">Managed by</span></div>
+        <div class="ptable__h"><span class="c1">Project</span><span class="c2">Start date</span><span class="c3">Ends in</span><span class="c4">Status</span><span class="c5">Managed by</span><span class="c6">Action</span></div>
         ${rows.length ? rows.map(p => `<div class="ptable__r">
           <span class="c1"><b>${e(p.name)}</b><small>${e(p.loc)}</small></span>
           <span class="c2 ${p.start === '—' ? 'em' : ''}">${p.start}</span>
           <span class="c3 ${p.status === 'Ending soon' ? 'warn' : ''}">${dash(p.ends)}</span>
           <span class="c4">${badge(p.status)}</span>
-          <span class="c5 ${p.by === '—' ? 'mut' : ''}">${e(p.by)}</span></div>`).join('')
+          <span class="c5 ${p.by === '—' ? 'mut' : ''}">${e(p.by)}</span>
+          <span class="c6"><a class="link-brand" data-a="noop">View details</a></span></div>`).join('')
         : `<div class="ptable__empty">No ${S.tab.toLowerCase()} pinnings</div>`}
       </div>
       <div class="pager">
@@ -224,26 +226,34 @@ window.NPDesktop = (function () {
     Reported: `30 Sep · ${r.report ? r.report.ref : 'RPT-20931'} · Housing is reviewing`,
     'Price updated': `Was ₹${NP.inr(r.oldRate || r.rate)}/sq.ft · your listing only`,
     'Editing price': 'Total updates as you type · Enter to save, Esc to cancel',
+    'Editing total': 'Rate updates as you type · Enter to save, Esc to cancel',
     'Sold out': 'Marked sold out by the developer · can’t be selected'
   })[r.status];
 
-  const pencil = (id) => `<button class="pencil" data-a="editPrice" data-v="${id}" aria-label="Edit price">${I('ic-pencil-simple-16.svg', 16, 16)}</button>`;
+  const SQM = 10.7639;
+  const unitLbl = () => S.unit === 'sqm' ? 'sq.m.' : 'sq.ft.';
+  const pencil = (id, a = 'editPrice', label = 'Edit price per unit') => `<button class="pencil" data-a="${a}" data-v="${id}" aria-label="${label}">${I('ic-pencil-simple-16.svg', 16, 16)}</button>`;
   const cfgRow = r => {
-    const sold = r.status === 'Sold out', editing = r.status === 'Editing price';
-    const showEdit = !sold && !editing;
-    const total = editing ? NP.num(r.draft) * r.area : r.total;
-    const action = editing
-      ? `<button class="txt-btn brand" data-a="savePrice" data-v="${r.id}">Save</button><button class="txt-btn" data-a="cancelPrice" data-v="${r.id}">Cancel</button>`
+    const sold = r.status === 'Sold out', editing = r.status === 'Editing price', editingT = r.status === 'Editing total';
+    const showEdit = !sold && !editing && !editingT;
+    const total = editing ? NP.num(r.draft) * r.area : editingT ? NP.num(r.draft) : r.total;
+    const rate = editingT ? Math.round(total / r.area) : r.rate;
+    const bind = `create.rows.${S.create.rows.indexOf(r)}.draft`;
+    const save = editingT ? 'saveTotal' : 'savePrice';
+    const action = editing || editingT
+      ? `<button class="txt-btn brand" data-a="${save}" data-v="${r.id}">Save</button><button class="txt-btn" data-a="cancelPrice" data-v="${r.id}">Cancel</button>`
       : r.status === 'Under review' ? `<button class="txt-btn" data-a="removeRow" data-v="${r.id}">Remove</button>`
         : r.status === 'Reported' ? `<button class="txt-btn" data-a="viewReport" data-v="${r.id}">Reported</button>`
           : `<button class="report-btn" data-a="report" data-v="${r.id}">${I('ic-warn-fill-16.svg', 16, 16)}Report</button>`;
     return `<div class="crow ${r.selected && !sold ? 'is-sel' : ''} ${sold ? 'is-sold' : ''}">
       <span class="c-sel"><button class="cbx ${r.selected && !sold ? 'is-on' : ''} ${sold ? 'is-dis' : ''}" data-a="toggleRow" data-v="${r.id}" aria-label="Select">${r.selected && !sold ? I('ic-check-white-12.svg', 12, 12) : ''}</button></span>
       <span class="c-cfg"><b>${e(r.label)}</b>${note(r) ? `<span class="status-line">${chip(r.status)}<small>${note(r)}</small></span>` : ''}</span>
-      <span class="c-price"><b>${NP.rupee(total)}</b><small>${NP.short(total)}</small>${showEdit ? pencil(r.id) : ''}</span>
+      <span class="c-price">${editingT
+        ? `<span class="unit-input total-input"><span class="ui-pre">₹</span><input data-bind="${bind}" value="${e(r.draft)}" data-enter="saveTotal" data-esc="cancelPrice" data-v="${r.id}" inputmode="numeric" aria-label="Total price" data-autofocus><span class="ui-suf">${total ? NP.short(total) : ''}</span></span>`
+        : `<b>${NP.rupee(total)}</b><small>${NP.short(total)}</small>${showEdit ? pencil(r.id, 'editTotal', 'Edit total price') : ''}`}</span>
       <span class="c-unit">${editing
-        ? `<span class="unit-input"><span class="ui-pre">₹</span><input data-bind="create.rows.${S.create.rows.indexOf(r)}.draft" value="${e(r.draft)}" data-enter="savePrice" data-esc="cancelPrice" data-v="${r.id}" inputmode="numeric" data-autofocus><span class="ui-suf">/sq.ft.</span></span>`
-        : `<b>${NP.rupee(r.rate)}</b><small>/sq.ft</small>${showEdit ? pencil(r.id) : ''}`}</span>
+        ? `<span class="unit-input"><span class="ui-pre">₹</span><input data-bind="${bind}" value="${e(r.draft)}" data-enter="savePrice" data-esc="cancelPrice" data-v="${r.id}" inputmode="numeric" data-autofocus><span class="ui-suf">/sq.ft.</span></span>`
+        : `<b>${NP.rupee(S.unit === 'sqm' ? Math.round(rate * SQM) : rate)}</b><small>/${S.unit === 'sqm' ? 'sq.m' : 'sq.ft'}</small>${showEdit ? pencil(r.id) : ''}`}</span>
       <span class="c-act">${action}</span>
     </div>`;
   };
@@ -256,7 +266,7 @@ window.NPDesktop = (function () {
         <button class="sel-all" data-a="selectAll"><span class="cbx16 ${all ? 'is-on' : ''}">${all ? I('ic-check-12-brand.svg', 12, 12) : ''}</span>Select all</button></div>
       <div class="ctable ${c.error ? 'is-err' : ''}">
         <div class="chead"><span class="c-sel"></span><span class="c-cfg">Configuration · built-up area</span><span class="c-price">Total price</span>
-          <span class="c-unit">Price / <a class="unit-sel" data-a="toggleUnit">${S.unit === 'sqft' ? 'sq.ft.' : 'sq.m.'}${I('ic-caret-down-brand-16.svg', 16, 16)}</a></span><span class="c-act">Report an issue</span></div>
+          <span class="c-unit">Price / <span class="dd-wrap unit-dd" data-dd><a class="unit-sel" data-a="openUnit" aria-expanded="${!!S.unitOpen}">${unitLbl()}${I(S.unitOpen ? 'ic-caret-up-brand-16.svg' : 'ic-caret-down-brand-16.svg', 16, 16)}</a>${S.unitOpen ? ddPanel([{ label: 'sq.ft.' }, { label: 'sq.m.' }], unitLbl(), 'pickUnit') : ''}</span></span><span class="c-act">Report an issue</span></div>
         ${c.rows.map(cfgRow).join('')}
       </div>
       ${c.error ? '<p class="units__err">Select at least one configuration you are selling — buyers are matched to you by configuration.</p>' : ''}

@@ -41,7 +41,7 @@
     tab: 'All', page: 1,
     filters: { open: null, competition: null, demand: null, dev: false, city: 'Gurugram', locs: 'Sector 71, +2', hoverDisabled: false },
     carousel: 0,
-    unit: 'sqft',                     // sqft | sqm
+    unit: 'sqft', unitOpen: false,    // sqft | sqm
     modal: null,
     sel: { city: 'Gurgaon', locs: ['Sector 49', 'Sohna Road', 'MG Road'], query: '', project: null, open: null, citySearch: '', locSearch: '', locDraft: [], forcePinned: false, hl: 1 },
     req: { name: '', dev: '', city: '', loc: '', rera: '', launch: '', poss: '', tried: false, sent: null },
@@ -83,8 +83,11 @@
   const closeDropdowns = () => {
     S.filters.open = null;
     S.sel.open = null;
+    S.unitOpen = false;
     if (S.create) { S.create.managedOpen = false; S.create.dateOpen = false; }
   };
+
+  const stopEditing = () => S.create.rows.forEach(x => { if (x.status === 'Editing price' || x.status === 'Editing total') x.status = x.prevStatus || 'Default'; });
 
   const toast = (t, ms = 5000) => {
     S.toast = { ...t, id: Date.now() };
@@ -168,7 +171,8 @@
       try { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'your-pinnings.csv'; a.click(); } catch (e) { }
       toast({ kind: 'info', title: 'Export started', sub: `your-pinnings.csv · ${S.pinnings.length} rows` }, 2500);
     },
-    toggleUnit() { S.unit = S.unit === 'sqft' ? 'sqm' : 'sqft'; },
+    openUnit() { const o = !S.unitOpen; closeDropdowns(); S.unitOpen = o; },
+    pickUnit(v) { S.unit = v === 'sq.m.' ? 'sqm' : 'sqft'; S.unitOpen = false; },
     renew() { S.modal = 'expired'; },
     moreSlots() { S.modal = 'limitThanks'; },
     extendPlan() { S.modal = 'expiredThanks'; },
@@ -217,8 +221,20 @@
     editPrice(id) {
       const r = S.create.rows.find(x => x.id === id);
       if (isMobile()) { S.edit = { id, total: inr(r.total), rate: inr(r.rate) }; S.modal = 'editPrice'; return; }
-      S.create.rows.forEach(x => { if (x.status === 'Editing price') { x.status = x.prevStatus || 'Default'; } });
+      stopEditing();
       r.prevStatus = r.status; r.draft = inr(r.rate); r.status = 'Editing price';
+    },
+    editTotal(id) {
+      const r = S.create.rows.find(x => x.id === id);
+      if (isMobile()) return actions.editPrice(id);
+      stopEditing();
+      r.prevStatus = r.status; r.draft = inr(r.total); r.status = 'Editing total';
+    },
+    saveTotal(id) {
+      const r = S.create.rows.find(x => x.id === id), v = num(r.draft);
+      if (!v) return actions.cancelPrice(id);
+      if (v !== r.total) { r.oldRate = r.oldRate || r.rate; r.total = v; r.rate = Math.round(v / r.area); r.status = 'Price updated'; }
+      else r.status = r.prevStatus || 'Default';
     },
     savePrice(id) {
       const r = S.create.rows.find(x => x.id === id), v = num(r.draft);
