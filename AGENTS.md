@@ -569,4 +569,35 @@ NP.S.create                  // Pinning creation state
 
 ---
 
+## Figma ↔ code map (Broker NP pinning page)
+
+Figma file `MMROfHNkpi8xHCcP7yQt41`, page "↳ Broker NP pinning" (`12108:220025`).
+
+### New states (2026-10-14)
+| Code | Figma | What it shows |
+|---|---|---|
+| `d3.1a` | 3.1a · Create pinning — unit dropdown open (`13258:21075`) | Price / sq.ft. header opens a sq.ft. / sq.m. dropdown; rows convert at 1 sq.m. = 10.7639 sq.ft. |
+| `d3.10` | 3.10 · Create pinning — edit total price row (`13261:82092`) | Total price inline edit; rate updates live, Enter saves, Esc cancels |
+
+`NP/Config table/Row` gained `Status=Editing total` (Selected = Yes / No).
+
+### Section components
+Repeated frames were turned into components; screens now use instances. Main components live in the "Desktop Local components" and "Mobile local components" sections.
+
+| Component | Code counterpart |
+|---|---|
+| NP/Dashboard/Page header (+ "· first time") | `desktop.js` `header()` |
+| NP/Dashboard/Add pinning CTA | `desktop.js` `.cta-bar` |
+| NP/Dashboard/Package banner | `desktop.js` package banner (`d1.2b`) |
+| NP/Create/Page header | `desktop.js` create-pinning header |
+| NP/Create/Schedule | `desktop.js` `schedule()` |
+| NP/Create/Date picker popover | `desktop.js` date picker |
+| NP/Create/Submit bar | `desktop.js` `submitBar()` |
+| NP/Dialog/Header, NP/Dialog/Actions · single CTA, · sub-broker | `desktop.js` modal shell |
+| NP/Mobile/Sticky CTA · dashboard, · select project | `mobile.js` sticky CTA |
+| NP/Mobile/Select project header | `mobile.js` select-project header |
+| NP/Mobile/Sheet header (+ "· with subtitle"), NP/Mobile/Sheet actions · single CTA, · sub-broker | `mobile.js` bottom sheets |
+
+---
+
 See [README.md](README.md) for more details on running and testing the prototype.
