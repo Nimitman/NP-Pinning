@@ -47,6 +47,7 @@ window.NPHooks = (function () {
     ]},
     { title: 'Desktop · 03 Create pinning', device: 'desktop', items: [
       ['d3.1', 'Confirm details', S => create(S)],
+      ['d3.1a', 'Unit dropdown open (sq.ft. / sq.m.)', S => { create(S); S.unitOpen = true; }],
       ['d3.2', 'No configuration selected (error)', S => create(S, c => { c.rows.forEach(r => r.selected = false); c.error = true; })],
       ['d3.3', 'Add missing configuration', S => { create(S, c => c.rows.forEach(r => r.selected = false)); addCfgFilled(S); S.modal = 'addCfg'; }],
       ['d3.4', 'Thank you — configuration added', S => { create(S, c => c.rows.forEach(r => r.selected = false)); addCfgFilled(S, true); S.modal = 'addCfgThanks'; }],

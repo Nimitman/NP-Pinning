@@ -41,7 +41,7 @@
     tab: 'All', page: 1,
     filters: { open: null, competition: null, demand: null, dev: false, city: 'Gurugram', locs: 'Sector 71, +2', hoverDisabled: false },
     carousel: 0,
-    unit: 'sqft',                     // sqft | sqm
+    unit: 'sqft', unitOpen: false,    // sqft | sqm
     modal: null,
     sel: { city: 'Gurgaon', locs: ['Sector 49', 'Sohna Road', 'MG Road'], query: '', project: null, open: null, citySearch: '', locSearch: '', locDraft: [], forcePinned: false, hl: 1 },
     req: { name: '', dev: '', city: '', loc: '', rera: '', launch: '', poss: '', tried: false, sent: null },
@@ -83,6 +83,7 @@
   const closeDropdowns = () => {
     S.filters.open = null;
     S.sel.open = null;
+    S.unitOpen = false;
     if (S.create) { S.create.managedOpen = false; S.create.dateOpen = false; }
   };
 
@@ -168,7 +169,8 @@
       try { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'your-pinnings.csv'; a.click(); } catch (e) { }
       toast({ kind: 'info', title: 'Export started', sub: `your-pinnings.csv · ${S.pinnings.length} rows` }, 2500);
     },
-    toggleUnit() { S.unit = S.unit === 'sqft' ? 'sqm' : 'sqft'; },
+    openUnit() { const o = !S.unitOpen; closeDropdowns(); S.unitOpen = o; },
+    pickUnit(v) { S.unit = v === 'sq.m.' ? 'sqm' : 'sqft'; S.unitOpen = false; },
     renew() { S.modal = 'expired'; },
     moreSlots() { S.modal = 'limitThanks'; },
     extendPlan() { S.modal = 'expiredThanks'; },
