@@ -431,7 +431,7 @@
     left, budgetState, pinsFor, selectedRows, manager, locSummary, selProject, isMobile, sbPhoneState, sbErrors, sbDetailsValid,
     get S() { return S; },
     set S(v) { S = v; },
-    fresh, newCreate, actions, render, startResend,
+    fresh, newCreate, actions, startResend,
     projectMatches() {
       const q = S.sel.query.trim().toLowerCase();
       if (!q) return [];
