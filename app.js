@@ -350,6 +350,12 @@
     'edit.rate'() { const e = S.edit, row = S.create.rows.find(x => x.id === e.id); e.rate = num(e.rate) ? inr(num(e.rate)) : ''; if (num(e.rate)) e.total = inr(num(e.rate) * row.area); }
   };
 
+  function fitDesktop() {
+    const dk = app.querySelector('.dk'); if (!dk) return;
+    const z = Math.min(1, document.documentElement.clientWidth / 1280);
+    dk.style.zoom = z < 1 ? String(z) : '';
+  }
+
   /* ---------- render loop with debouncing to prevent flicker ---------- */
   const app = document.getElementById('app');
   let lastRouteKey = null;
