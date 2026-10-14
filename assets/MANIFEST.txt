@@ -1,0 +1,86 @@
+ic-x-16.svg | X (Stroke/Regular/16) | 12909:242864 | 16x16 | modal close icon (d1.3+)
+ic-caret-down-16.svg | CaretDown (InputField Trailing Icon) | I12991:20528;1691:7935 | 16x16 | modal select field chevron (city/locality)
+ic-magnifying-glass-16.svg | MagnifyingGlass (InputField Leading Icon) | I12991:20530;1691:7876 | 16x16 | modal project search field leading icon
+housing-logo-seller-dark.svg | HousingLogo theme=dark type=seller | 8005:393 | 140x35 | navbar logo
+ic-chevron-down-white-16.svg | ChevronDown | I12709:7311;...;6034:12306 | 16x16 | navbar 'More' menu item
+ic-coin-16.svg | Coin | I12709:7311;...;10911:178756 | 15.46x16 | navbar coin balance
+ic-plus-14.svg | call (plus) | I12709:7311;...;666:2342 | 14x14 | navbar Add Property button (SVG fill is #222222 but design renders it WHITE: recolor via CSS mask / filter)
+ic-caret-right-16.svg | ic:caretRight | 12709:7415 | 16x16 (rotated 180deg as back arrow) | page-header back button; also see-all/export carets
+ic-plus-brand-16.svg | leading-icon (Plus) | I12709:7420;136:341 | 16x16 | 'Pin a project' outline button
+ic-cal-x-fill-warning-14.svg | ic:calXFill24 | 12709:7430 | 14x14 | pinning-budget card validity line (warning color)
+avatar-jitesh-kumar.png | Frame (avatar image fill) | 13002:156122 | 18x18 (circle) | sticky-cta managed-by avatar
+avatar-jitesh-kumar-17.png | Ellipse 18 | 12709:10277 | 17x17 | submit-bar 'Managed by' selector avatar
+ic-caret-down-16-2.svg | ic:caretDown | 12709:10279 | 16x16 | submit-bar managed-by selector chevron (stroke variant)
+ic-warn-fill-16.svg | ic:warnFill24 | I13002:145752;12991:145293 | 16x16 | config item top-right warning
+ic-caret-down-brand-16.svg | Unit selector trailing-icon | I13002:145752;13002:145380;136:1257 | 16x16 | config item 'sq.ft.' unit selector
+ic-pencil-simple-16.svg | PencilSimple | I13002:145752;13002:145368 | 16x16 in 28x28 box | config item price edit buttons
+ic-buildings-28.svg | ic:buildings20 | 12991:20363 | 28x28 | project-summary thumbnail placeholder
+ic-arrow-square-out-12.svg | ArrowSquareOut | 12991:20508 | 12x12 | project-summary top-right external link
+divider-vertical-20.svg | Line 70 | 12991:20373 | 20x1 rotated 90deg (vertical) | project-summary signal row divider
+ic-user-circle-gear-12.svg | UserCircleGear | I12991:20375;12515:130888 | 12x12 | project-summary 'Developer is active'
+ic-back-24.svg | Back | 8488:7318 | 24x24 | mobile top-panel back arrow
+sb-wifi-16.svg | Wifi | I10917:211558;307:54176;266:1645 | 16x16 | mobile status bar
+sb-signal-16.svg | Signal | I10917:211558;307:54176;266:1646 | 16x16 | mobile status bar
+sb-battery-16.svg | Battery | I10917:211558;307:54176;266:1648 | 16x16 | mobile status bar
+chrome-home-24.svg | Home | 10917:211560 | 24x24 | mobile chrome toolbar left
+chrome-lock-8x11.svg | Lock | 10917:211565 | 8x11 (in 16x16 box, at 4,3) | mobile chrome address field
+chrome-more-24.svg | More | 10917:211576 | 24x24 | mobile chrome toolbar right
+ic-buildings-24.svg | Buildings | 12520:132365 | 24x24 | thumbnail-mobile no-img placeholder (centered in 64x64 #eee)
+ic-sparkle-fill-20.svg | ic:sparkleFill (Sparkle) | 12909:236313 | 20x20 | 'Best opportunities for you' title icon
+ic-caret-down-18.svg | Trailing Icon (CaretDown) selected pill | I12926:257908;2774:20305 | 18x18 | filter pill (selected: Gurugram / Sector) trailing chevron
+line-divider-v-38.svg | Line 70 | 12926:257910 | 38 long, rotated 90deg (vertical) | filter bar vertical divider
+ic-caret-down-muted-18.svg | Trailing Icon (CaretDown) default pill | I12926:257913;2774:20301 | 18x18 | filter pill (default: Seller competition) trailing chevron
+ic-caret-left-18.svg | CaretLeft | 12926:257918 | 18x18 | carousel prev button
+ic-caret-right-18.svg | CaretRight | 12926:257921 | 18x18 | carousel next button
+ic-plus-white-16.svg | Plus | I13024:159483;12565:135653 | 16x16 | project card 'Pin' button
+ic-user-circle-gear-muted-12.svg | UserCircleGear (not active) | 12515:130926 | 12x12 | project card 'Developer is not active'
+ic-caret-right-12.svg | CaretRight (rendered rotated 90deg = down) | I12709:10669;1691:8092 | 12x12 | phone input country selector '+91' chevron (d4.2-d4.6)
+ic-check-white-12.svg | ic:check | 12720:13205 | 12x12 | config table checkbox (checked) tick
+ic-users-fill-16.svg | ic:usersFill | 13024:158697 | 16x16 | project-summary-card signal 'No competition yet'
+ic-user-circle-gear-16.svg | UserCircleGear | 13024:158702 | 16x16 | project-summary-card signal 'Developer is active here'
+ic-arrow-square-out-14.svg | ic:arrowSquareOut12 | 13024:158645 | 14x14 | project-summary-card 'Preview project' button
+ic-info-18.svg | Info | 12709:7658 | 18x18 | schedule duration hint icon
+ic-warning-12.svg | Warning | 12640:140697 | 12x12 | dropdown menu item 'Not allowed under your plan'
+project-thumb-1.jpg | thumbnail-mobile Property1=img - desktop (image fill) | 12520:132346 | 64x64 (object-fit cover, radius 12) | project card thumbnail (sample data)
+ic-x-danger-16.svg | toast trailing-icon (X) | 13002:146618 | 16x16 | m3.2 error toast close
+ic-sparkle-16.svg | icon (Sparkle) in NP/Signal/BestOpportunity | 12112:245157 | 16x16 | 'Best opportunity' badge (project-summary variant, d4.2-d4.8 base)
+ic-buildings-28-2.svg | ic:buildings20 | 12709:10400 | 28x28 | project thumbnail placeholder (72x72 variant, d4.2-d4.8 base)
+ic-arrow-square-out-14-2.svg | ic:arrowSquareOut12 | 12709:10408 | 14x14 | 'Preview project' button
+ic-users-fill-16-2.svg | ic:usersFill | 12709:10421 | 16x16 | signal strip '0 sellers tagged' (d4.2-d4.8 base)
+ic-user-circle-gear-16-2.svg | UserCircleGear | 12709:10426 | 16x16 | signal strip 'Developer is active here' (d4.2-d4.8 base)
+ic-pagination-prev-16.svg | Navigation Button (Previous) Icon | I12520:132064;2028:9 | 16x16 in 32x32 button | pagination prev
+ic-pagination-next-16.svg | Navigation Button (Next) Icon | I12520:132072;2028:9 | 16x16 in 32x32 button | pagination next
+ic-export-brand-16.svg | ic:caretRight (Export icon) | 13002:152400 | 16x16 | 'Export' link in Your pinnings header
+ic-question-20.svg | Question (Stroke/Regular/20) | 12576:138155 | 20x20 | Project dropdown footer 'Can't find your project?'
+ic-warning-circle-danger-16.svg | Status Icon (WarningCircle fill, danger) | I12794:232142;1691:8183 | 16x16 | InputField error supporting-text leading icon (m4.4, m4.6)
+ic-arrow-square-out-16.svg | ArrowSquareOut | I13002:152216;12991:145283 | 16x16 | pinning card title external-link icon
+ic-caret-up-18.svg | CaretUp | 13002:152384 | 18x18 in 36x36 bordered button | Your pinnings mobile collapse toggle
+nav-dashboard-active-24.svg | Dashboard (selected) | 8488:7583 | 24x24 | mobile bottom nav Dashboard (active, brand)
+ic-plus-white-18.svg | leading-icon (Plus) | I12788:227918;136:149 | 18x18 | mobile sticky CTA 'Add new project pinning'
+nav-leads-24.svg | Leads | I9298:95878;52:2404 | 24x24 | mobile bottom nav Leads (inactive)
+nav-listings-24.svg | Listings | I9298:95881;52:2373 | 24x24 | mobile bottom nav Listings (inactive)
+nav-more-24.svg | More | I9298:95883;52:2364 | 24x24 | mobile bottom nav More (inactive)
+nav-packages-25x24.svg | Packages | I9298:95882;52:2393 | 25.2x24 in 24x24 box (inset 0 -1.67% 0 -3.33%) | mobile bottom nav Packages (inactive)
+nav-selection-indicator-59x3.svg | Selection Indicator | 8488:7588 | 59.2x3 | mobile bottom nav active tab underline (below label)
+ic-user-circle-gear-muted-12-2.svg | UserCircleGear (not active, fill #222222) | I12936:259689;12973:263157;12561:135435;12515:130926 | 12x12 | Recommendations/Mobile 3rd NP card "Developer is not active" (m1.x; mostly off-screen)
+ic-caret-down-16-3.svg | CaretDown Stroke/Regular/16 | 10615:12302 | 16x16 | m3.3 sheet: 'Built up area' label + sq.ft. unit dropdown
+checkbox-slot-bg-18.svg | Vector (.Trailing icon components bg) | I12991:18760;2033:6785;2033:6767 | 18x18 | locality dropdown item trailing checkbox slot (under 16px checkbox)
+ic-check-12-brand.svg | Check (Checkbox Selected Icon) | I12991:18761;2033:6795;2033:24317;1999:9679 | 12x12 | locality dropdown checkbox checked tick
+ic-calendar-dot-14.svg | ic:calXFill24 (CalendarDot, neutral) | 12709:7228 | 14x14 | pinning-budget validity line, normal (non-warning) state d1.1
+ic-x-16-2.svg | X (clear input) | I12991:20659;1986:766 | 16x16 | project search field clear button (focused/typing)
+ic-cal-x-fill-dark-14.svg | ic:calXFill24 (dark variant) | 12788:14910 | 14x14 | m1.1 budget card validity line (default/dark color)
+ic-check-circle-success-48.svg | ic:calXFill24 (CheckCircle, green) | 12709:12482 | 48x48 | 'Sub-broker created' modal success icon (d4.8)
+ic-caret-down-dark-18.svg | CaretDown | 12968:261033 | 18x18 in 34x34 icon button | Your pinnings collapsed banner expand button (d1.2a)
+ic-arrows-left-right-24.svg | ArrowsLeftRight | 12657:147096 | 24x24 | add-config modal, between Price and Rate fields
+ic-warn-fill-14.svg | ic:warnFill24 | 12709:8220 | 14x14 | "90 days" duration pill warning icon (#8C6900); hidden in d3.1, visible in d3.3–d3.8b
+ic-cal-x-fill-danger-14.svg | ic:calXFill24 (danger) | 12968:261195 | 14x14 | pinning-budget validity line, expiring state (d1.2b)
+ic-buildings-28-3.svg | ic:buildings20 | 12909:246076 | 28x28 | d1.7 project-summary thumbnail placeholder icon (72x72 grey tile)
+ic-arrow-left-24.svg | ArrowLeft | 12991:16212 | 24x24 | m2.x mobile header back arrow (56px white header)
+ic-warning-fill-danger-48.svg | ic:calXFill24 (Warning, danger) | 12973:261804 | 48x48 | limit-reached modal icon
+ic-question-16.svg | Question (Stroke/Regular/16; SVG 16x16 stretched to fill 20x20 box) | 12991:19168 | 20x20 | project dropdown footer 'Can't find your project?' leading icon
+ic-plus-circle-brand-16.svg | PlusCircle | 12561:135274 | 16x16 | NP/Project Card desktop v2 'Add' outline button
+ic-dot-4.svg | dot1 | 12515:130885 | 4x4 | competition level-row separator dot (lavender)
+ic-sparkle-12.svg | icon (Sparkle) | 12515:131075 | 12x12 | NP/Signal/BestOpportunity leading icon
+ic-info-lavender-12.svg | icon (Info) | 12515:131109 | 12x12 | NP/Signal/BestOpportunity trailing info icon
+ic-user-circle-gear-12-2.svg | UserCircleGear (green #2f7f49; path differs from ic-user-circle-gear-12.svg only by float rounding) | I12515:130942;12515:130888 | 12x12 | NP/Project Card mobile (master 12515:130876) developer row
+ic-push-pin-brand-16.svg | PushPin | 12515:130478 | 16x16 | NP/Project Card mobile (master) outline 'Pin' button icon
